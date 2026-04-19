@@ -563,6 +563,14 @@ export interface ConnectionOptions {
   /** Callback to execute when a new connection is created. */
   onCreateConnection?: (connection: unknown) => Promise<void>;
   /**
+   * Callback to execute every time a connection is reserved from the pool.
+   * Useful for setting per-request session state (e.g. Postgres `SET` for row
+   * level security tenant ids) that must apply to every query routed through
+   * the reserved connection. Currently only supported by the `postgresql` and
+   * `mysql` drivers (via the corresponding Kysely dialects).
+   */
+  onReserveConnection?: (connection: unknown) => Promise<void>;
+  /**
    * SQLite/libSQL: databases to attach on connection.
    * Each attached database acts as a schema, accessible via `schema.table` syntax.
    * Entities can reference attached databases via `@Entity({ schema: 'db_name' })`.
